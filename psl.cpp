@@ -1,5 +1,3 @@
-#include <cstdlib>
-#include <ctime>
 #include <iostream>
 using namespace std;
 int main()
@@ -65,11 +63,16 @@ int main()
                              // playerspms
         pms[30] = {" "},
            // teams for match
-        teamA[3] = {" "}, teamB[3] = {" "}, results_win[15] = {" "},
-           results_loss[15] = {" "}, man_of_match[15] = {" "};
+        teamA[6] = {"Karachi Kings",    "Lahore Qalandars",  "Peshawar Zalmi",
+                    "Islamabad United", "Quetta Gladiators", "Multan Sultans"},
+           teamB[6] = {"Karachi Kings",     "Lahore Qalandars",
+                       "Peshawar Zalmi",    "Islamabad United",
+                       "Quetta Gladiators", "Multan Sultans"},
+           man_of_match[15] = {" "};
 
-    int price[6] = {-1}, win_score[15] = {0}, loss_score[15] = {0},
-        man_of_match_score[15] = {0};
+    int price[6] = {-1}, score1[15] = {0}, score2[15] = {0},
+        man_of_match_score[15] = {0}, points[6] = {0}, mplayed[6] = {0},
+        won[6] = {0}, loss[6] = {0}, draw[6] = {0};
     bool flag = true, inflag = true;
     srand(time(0));
     while (flag)
@@ -96,7 +99,7 @@ int main()
         else if (choice == 2)  // bidding
         {
             cout << "Bidding for The Players" << endl;
-            for (int i = 0; i < 3; i++)  // loop for player
+            for (int i = 0; i < 30; i++)  // loop for player
             {
                 int price[6] = {
                     -1};  // array of price for a player from each team
@@ -131,37 +134,60 @@ int main()
                     inflag = true;
                     max = -1;
                     mindex = -1;
-                    for (int j = 0; j < 6; j++)
+                    for (int j = 0; j < 6;
+                         j++)  // finding which team bid the most
                     {
                         if (price[j] > max)
                         {
                             max = price[j];
                             mindex = j;
+                            // index which gives us the team that bid
+                            // the most for ex (if mindex is 0 than
+                            // Karachi kings bid the most for the player
+                            // or if mindex = 1 than lahore Qalanders bids the
+                            // most for the player) price[1] represents Karachi
+                            // kings bid
+                            // price[2] represents lahore Qalanders bids
+                            // price[3] represents peshawar zalmis bids
+                            // price[4] represents islamabad united bid
+                            // price[5] represents Queta Gladiaters bid
+                            // price[1] represents Multan Sultans bid
                         }
                     }
                 }  // inner loop ends
 
-                if (mindex == 0)
+                if (mindex == 0)  // if mindex is 0 than the player will be
+                                  // given to Karachi kings
                 {
                     pkk[i] = pname[i];
                 }
-                if (mindex == 1)
+                if (mindex == 1)  // if mindex is 1 than the player will be
+                                  // given to lahore Qalanders
+
                 {
                     plq[i] = pname[i];
                 }
-                if (mindex == 2)
+                if (mindex == 2)  // if mindex is 2 than the player will be
+                                  // given to Peshawar Zalmi
+
                 {
                     ppz[i] = pname[i];
                 }
-                if (mindex == 3)
+                if (mindex == 3)  // if mindex is 3 than the player will be
+                                  // given to Islamabad united
+
                 {
                     piu[i] = pname[i];
                 }
-                if (mindex == 4)
+                if (mindex == 4)  // if mindex is 4 than the player will be
+                                  // given to Quetta Gladiaters
+
                 {
                     pqg[i] = pname[i];
                 }
-                if (mindex == 5)
+                if (mindex == 5)  // if mindex is 5 than the player will be
+                                  // given to Multan Sultan
+
                 {
                     pms[i] = pname[i];
                 }
@@ -170,22 +196,149 @@ int main()
         }  // choice 3 ends
         else if (choice == 3)  // Match scheduling
         {
-            for (int i = 0; i < 3; i++)
+            int count = 1;
+            for (int i = 0; i < 6; i++)  // outer loop takes the first team from
+                                         // the array like KArachi kings
             {
-                int j = 0 + (rand() % (3 - 0 + 1));
-                teamA[j] = name[i];
-            }
-            for (int i = 3; i < 6; i++)
-            {
-                int j = 3 + (rand() % (5 - 3 + 1));
-                teamB[j] = name[i];
-            }
-            for (int i = 0; i < 6; i++)
-            {
-                cout << teamA[i] << " vs " << teamB[i] << endl;
+                for (int j = i + 1; j < 6; j++)
+                // inner loop than takes the next team of the array
+                // and Schedules matches for ex(Karachi kings vs
+                // Lahore qalanders or karachi kings vs peshawar
+                // zalmi)
+                {
+                    if (i != j)
+                    // this checks that the match is not Scheduled with
+                    // the same team for ex (Karachi kings vs karachi
+                    // Kings or Lahore Qalanders vs lahore Qalanders)
+                    {
+                        cout << "Match " << count << ":- \n";
+                        cout << teamA[i] << " vs " << teamB[j] << endl;
+                    }
+                    count++;
+                }
             }
         }
         else if (choice == 4)
+        {
+            inflag = true;
+            // it is the same as task 3 but with scores enterance and points
+            int count = 1;
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = i + 1; j < 6; j++)
+                {
+                    if (i != j)
+                    {
+                        cout << "Match " << count << ":- \n";
+                        cout << teamA[i] << " vs " << teamB[j] << endl;
+                        cout << "Enter the score of " << teamA[i] << ":- \n";
+                        cin >> score1[count];  // score of team 1
+                        while (inflag)
+                        {
+                            if (score1[count] < 0)
+                            {
+                                cout << "The score cannot be negative, Again "
+                                        "enter:- \n";
+                                cin >> score1[count];
+                                break;
+                            }
+                            else
+                            {
+                                inflag = false;
+                            }
+                        }
+                        inflag = true;
+                        cout << "Enter the score of " << teamB[j] << ":- \n";
+                        cin >> score2[count];  // score of team 2
+                        while (inflag)
+                        {
+                            if (score2[count] < 0)
+                            {
+                                cout << "The score cannot be negative, Again "
+                                        "enter:- \n";
+                                cin >> score1[count];
+                                break;
+                            }
+                            else
+                            {
+                                inflag = false;
+                            }
+                        }
+                        inflag = true;
+                        if (score1[count] > score2[count])
+                        // to determine the winner(agar
+                        // pheli team ka score zayada hai
+                        // dosri team sai tou pheli team
+                        // jeeta gi aur us ka points main 2
+                        // ka izafa ho ga)
+                        {
+                            mplayed[i] +=
+                                1;  // counter for match played by team 1
+                            won[i] += 1;
+                            loss[j] += 1;
+                            mplayed[j] +=
+                                1;  // counter for match played by team 2
+                            points[i] += 2;
+                            cout << "Team won:- " << teamA[i] << endl
+                                 << " Points:- " << points[i] << endl;
+                        }
+                        else if (score1[count] <
+                                 score2[count])  // to determine the winner(agar
+                                                 // dosri team ka score zayada
+                                                 // hai pheli team sai tou dosri
+                                                 // team jeeta gi aur us ka
+                                                 // points main 2 ka izafa ho
+                                                 // ga)
+                        {
+                            mplayed[i] +=
+                                1;  // counter for match played by team 1
+                            mplayed[j] +=
+                                1;  // counter for match played by team 2
+                            points[j] += 2;
+                            won[j] += 1;
+                            loss[i] += 1;
+                            cout << "Team won:- " << teamB[j] << endl
+                                 << " Points:- " << points[j] << endl;
+                        }
+                        if (score1[count] == score2[count])
+                        {
+                            mplayed[i] +=
+                                1;  // counter for match played by team 1
+                            mplayed[j] +=
+                                1;  // counter for match played by team 2
+                            draw[i] += 1;
+                            draw[j] += 1;
+                            cout << "It is a draw \n";
+                            points[i] += 1;
+                            points[j] += 1;
+                        }
+                        count++;
+                    }
+                }
+            }
+        }
+        else if (choice == 5)  // ya bas esa hi testing kai liya hai, ya bata ta
+                               // hai kai kis team kai pas kon sa player hai
+        {
+            cout << "Teams                Played  Won   Lost  Draw  Points\n";
+            for (int i = 0; i < 6; i++)
+            {
+                // Adjust spacing for names
+                cout << name[i];
+                int spaces =
+                    20 -
+                    name[i].length();  // Ensure consistent alignment for names
+                while (spaces--) cout << " ";
+
+                // Center-align numbers with padding
+                cout << "  " << mplayed[i] << "    "  // Matches played
+                     << "  " << won[i] << "   "       // Matches won
+                     << "  " << loss[i] << "   "      // Matches lost
+                     << "  " << draw[i] << "   "      // Matches drawn
+                     << "  " << points[i] << endl;    // Total points
+            }
+        }
+        else if (choice == 6)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -198,11 +351,7 @@ int main()
             }
             flag = true;
         }
-        else if (choice == 5)
-        {
-            flag = true;
-        }
-        else if (choice == 6)
+        else if (choice == 7)
         {
             flag = false;
         }
