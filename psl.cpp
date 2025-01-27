@@ -70,11 +70,19 @@ int main()
                        "Quetta Gladiators", "Multan Sultans"},
            man_of_match[15] = {" "};
 
-    int price[6] = {-1}, score1[15] = {0}, score2[15] = {0},
+    int price[6] = {-1}, score1[17] = {-1}, score2[17] = {-1},
         man_of_match_score[15] = {0}, points[6] = {0}, mplayed[6] = {0},
-        won[6] = {0}, loss[6] = {0}, draw[6] = {0};
-    bool flag = true, inflag = true;
+        won[6] = {0}, loss[6] = {0}, draw[6] = {0}, count = 0;
+    bool flag = true, inflag = true, draft = false;
     srand(time(0));
+    for (int i = 0; i < 17; i++)
+    {
+        for (int j = 0; j < 17; j++)
+        {
+            score1[i] = -1;
+            score2[i] = -1;
+        }
+    }
     while (flag)
     {
         cout << " Welcome to the PSL Management System:" << endl;
@@ -193,7 +201,8 @@ int main()
                 }
             }  // outer loop ends
             flag = true;
-        }  // choice 3 ends
+            draft = true;
+        }  // choice 2 ends
         else if (choice == 3)  // Match scheduling
         {
             int count = 1;
@@ -220,106 +229,178 @@ int main()
         }
         else if (choice == 4)
         {
-            inflag = true;
-            // it is the same as task 3 but with scores enterance and points
-            int count = 1;
-            for (int i = 0; i < 6; i++)
+            bool break1 = false;
+            draft = true;
+            if (!draft)
             {
-                for (int j = i + 1; j < 6; j++)
+                cout << "Drafting of the players has not been done yet \n";
+                flag = true;
+            }
+            else
+            {
+                inflag = true;
+                // it is the same as task 3 but with scores enterance and points
+                if ()
                 {
-                    if (i != j)
+                    count = 1;
+                }
+                for (int i = 0; i < 6; i++)
+                {
+                    for (int j = i + 1; j < 6; j++)
                     {
-                        cout << "Match " << count << ":- \n";
-                        cout << teamA[i] << " vs " << teamB[j] << endl;
-                        cout << "Enter the score of " << teamA[i] << ":- \n";
-                        cin >> score1[count];  // score of team 1
-                        while (inflag)
+                        if (count == 7)
                         {
-                            if (score1[count] < 0)
+                            cout << "Enter match results of Round 2:- \n\n";
+                        }
+                        if (i != j && score1[count] == -1)
+                        {
+                            cout << "Match " << count << ":- \n";
+                            cout << teamA[i] << " vs " << teamB[j] << endl;
+                            cout << "Enter the score of " << teamA[i]
+                                 << ":- \n";
+                            cin >> score1[count];  // score of team 1
+                            while (inflag)
                             {
-                                cout << "The score cannot be negative, Again "
-                                        "enter:- \n";
-                                cin >> score1[count];
-                                break;
+                                if (score1[count] < 0)
+                                {
+                                    cout << "The score cannot be negative, "
+                                            "Again "
+                                            "enter:- \n";
+                                    cin >> score1[count];
+                                    break;
+                                }
+                                else
+                                {
+                                    inflag = false;
+                                }
                             }
-                            else
+                            inflag = true;
+                            cout << "Enter the score of " << teamB[j]
+                                 << ":- \n";
+                            cin >> score2[count];  // score of team 2
+                            while (inflag)
                             {
-                                inflag = false;
+                                if (score2[count] < 0)
+                                {
+                                    cout << "The score cannot be negative, "
+                                            "Again "
+                                            "enter:- \n";
+                                    cin >> score1[count];
+                                    break;
+                                }
+                                else
+                                {
+                                    inflag = false;
+                                }
                             }
-                        }
-                        inflag = true;
-                        cout << "Enter the score of " << teamB[j] << ":- \n";
-                        cin >> score2[count];  // score of team 2
-                        while (inflag)
-                        {
-                            if (score2[count] < 0)
+                            inflag = true;
+                            if (score1[count] > score2[count])
+                            // to determine the winner(agar
+                            // pheli team ka score zayada hai
+                            // dosri team sai tou pheli team
+                            // jeeta gi aur us ka points main 2
+                            // ka izafa ho ga)
                             {
-                                cout << "The score cannot be negative, Again "
-                                        "enter:- \n";
-                                cin >> score1[count];
-                                break;
+                                mplayed[i] +=
+                                    1;  // counter for match played by team 1
+                                won[i] += 1;
+                                loss[j] += 1;
+                                mplayed[j] +=
+                                    1;  // counter for match played by team 2
+                                points[i] += 2;
+                                cout << "Team won:- " << teamA[i] << endl
+                                     << " Points:- " << points[i] << endl;
                             }
-                            else
+                            else if (score1[count] <
+                                     score2[count])  // to determine the
+                                                     // winner(agar dosri team
+                                                     // ka score zayada hai
+                                                     // pheli team sai tou dosri
+                                                     // team jeeta gi aur us ka
+                                                     // points main 2 ka izafa
+                                                     // ho ga)
                             {
-                                inflag = false;
+                                mplayed[i] +=
+                                    1;  // counter for match played by team 1
+                                mplayed[j] +=
+                                    1;  // counter for match played by team 2
+                                points[j] += 2;
+                                won[j] += 1;
+                                loss[i] += 1;
+                                cout << "Team won:- " << teamB[j] << endl
+                                     << " Points:- " << points[j] << endl;
+                            }
+                            if (score1[count] == score2[count])
+                            {
+                                mplayed[i] +=
+                                    1;  // counter for match played by team 1
+                                mplayed[j] +=
+                                    1;  // counter for match played by team 2
+                                draw[i] += 1;
+                                draw[j] += 1;
+                                cout << "It is a draw \n";
+                                points[i] += 1;
+                                points[j] += 1;
+                            }
+                            count++;
+                            if (count == 7 && !break1)
+                            {
+                                int rchoice = 0;
+                                cout << "***********Round 1 is "
+                                        "finished********** \n\n";
+                                cout << "Would you like to continue on round "
+                                        "2:- \n";
+                                cout << "1- Yes \n";
+                                cout << "2- No \n";
+                                cin >> rchoice;
+                                if (rchoice == 2)
+                                {
+                                    break1 = true;
+                                    break;
+                                }
                             }
                         }
-                        inflag = true;
-                        if (score1[count] > score2[count])
-                        // to determine the winner(agar
-                        // pheli team ka score zayada hai
-                        // dosri team sai tou pheli team
-                        // jeeta gi aur us ka points main 2
-                        // ka izafa ho ga)
-                        {
-                            mplayed[i] +=
-                                1;  // counter for match played by team 1
-                            won[i] += 1;
-                            loss[j] += 1;
-                            mplayed[j] +=
-                                1;  // counter for match played by team 2
-                            points[i] += 2;
-                            cout << "Team won:- " << teamA[i] << endl
-                                 << " Points:- " << points[i] << endl;
-                        }
-                        else if (score1[count] <
-                                 score2[count])  // to determine the winner(agar
-                                                 // dosri team ka score zayada
-                                                 // hai pheli team sai tou dosri
-                                                 // team jeeta gi aur us ka
-                                                 // points main 2 ka izafa ho
-                                                 // ga)
-                        {
-                            mplayed[i] +=
-                                1;  // counter for match played by team 1
-                            mplayed[j] +=
-                                1;  // counter for match played by team 2
-                            points[j] += 2;
-                            won[j] += 1;
-                            loss[i] += 1;
-                            cout << "Team won:- " << teamB[j] << endl
-                                 << " Points:- " << points[j] << endl;
-                        }
-                        if (score1[count] == score2[count])
-                        {
-                            mplayed[i] +=
-                                1;  // counter for match played by team 1
-                            mplayed[j] +=
-                                1;  // counter for match played by team 2
-                            draw[i] += 1;
-                            draw[j] += 1;
-                            cout << "It is a draw \n";
-                            points[i] += 1;
-                            points[j] += 1;
-                        }
-                        count++;
+                    }
+                    if (break1)
+                    {
+                        break;
+                        flag = true;
+                        break1 = false;
                     }
                 }
             }
+            flag = true;
         }
         else if (choice == 5)  // ya bas esa hi testing kai liya hai, ya bata ta
                                // hai kai kis team kai pas kon sa player hai
         {
+            string ntemp = "";
+            int temp = 0, wtemp = 0, ltemp = 0, dtemp = 0;
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    if (points[j] < points[j + 1])
+                    {
+                        temp = points[j];
+                        ntemp = name[j];
+                        wtemp = won[j];
+                        ltemp = loss[j];
+                        dtemp = draw[j];
+                        points[j] = points[j + 1];
+                        name[j] = name[j + 1];
+                        won[j] = won[j + 1];
+                        loss[j] = loss[j + 1];
+                        draw[j] = draw[j + 1];
+                        points[j + 1] = temp;
+                        name[j + 1] = ntemp;
+                        won[j + 1] = wtemp;
+                        loss[j + 1] = ltemp;
+                        draw[j + 1] = dtemp;
+                    }
+                }
+            }
+
             cout << "Teams                Played  Won   Lost  Draw  Points\n";
             for (int i = 0; i < 6; i++)
             {
@@ -340,16 +421,55 @@ int main()
         }
         else if (choice == 6)
         {
-            for (int i = 0; i < 3; i++)
+            bool found = false;
+            int schoice = 0;
+            cout << "1- Search Team:- \n";
+            cout << "2- Search Player:- \n";
+            cout << "Enter your choice:- \n";
+            cin >> schoice;
+            cin.ignore();
+            if (schoice == 1)
             {
-                cout << "LAHORE QALANDERS:- " << plq[i] << "\n\n";
-                cout << "Karachi Kings:- " << pkk[i] << "\n\n";
-                cout << "Peshawar Zalmi:- " << ppz[i] << "\n\n";
-                cout << "Islamabad united:- " << piu[i] << "\n\n";
-                cout << "Quetta Gladiators:- " << pqg[i] << "\n\n";
-                cout << "Multan Sultans:- " << pms[i] << "\n\n";
+                string searchQuery;
+                cout << "Enter team or player name: ";
+                getline(cin, searchQuery);
+                for (int i = 0; i < 6; i++)
+                {
+                    if (name[i] == searchQuery)
+                    {
+                        cout << "Team: " << name[i] << " City: " << hcity[i]
+                             << " Ground: " << hgro[i] << "\n";
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    cout << "Not Found\n";
+                }
+                found = false;
             }
-            flag = true;
+            else if (schoice == 2)
+            {
+                string searchQuery;
+                cout << "Enter team or player name: ";
+                getline(cin, searchQuery);
+                for (int i = 0; i < 30; i++)
+                {
+                    if (pname[i] == searchQuery)
+                    {
+                        cout << "Player: " << pname[i] << " Role: " << prole[i]
+                             << "\n";
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    cout << "Not found\n";
+                }
+                flag = false;
+            }
         }
         else if (choice == 7)
         {
